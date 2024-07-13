@@ -1,0 +1,71 @@
+---
+# tasks file for aws_ec2_db_role
+- name: Create security group for EC2 instance
+  amazon.aws.ec2_group:
+    name: ec2_security_group
+    description: "Security group for EC2 instance"
+    region: ap-south-1
+    aws_access_key: "{{access_key}}"  # From vault as defined  
+    aws_secret_key: "{{secret_key}}"  # From vault as defined
+    rules:
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 3306
+        to_port: 3306
+        cidr_ip: 0.0.0.0/0
+          #source: "{{rds_security_group.group_id}}"
+    state: present
+  register: ec2_security_group
+- name: start an instance with a public IP address
+  amazon.aws.ec2_instance:
+    name: "ansible-instance"
+    # key_name: "ssh-key"
+    # vpc_subnet_id: subnet-xxxxxxxxxx
+    instance_type: "{{ec2_type}}" #variable
+    security_group: "{{ec2_security_group.group_id}}"
+    region: ap-south-1
+    aws_access_key: "{{access_key}}"   # From vault as defined
+    aws_secret_key: "{{secret_key}}"  # From vault as defined
+    network:
+      assign_public_ip: true
+    image_id: "{{ubuntu_ami}}"
+    tags:
+      Environment: Testing
+- name: Create security group for RDS instance
+  amazon.aws.ec2_group:
+    name: rds_security_group
+    description: "Security group for RDS instance"
+    region: ap-south-1
+    aws_access_key: "{{access_key}}"  # From vault as defined
+    aws_secret_key: "{{secret_key}}"  # From vault as defined
+    rules:
+      - proto: tcp
+        from_port: 3306
+        to_port: 3306
+        group_name: ec2_security_group
+    state: present
+  register: rds_security_group
+- name: Create RDS MySQL instance1
+  amazon.aws.rds_instance:
+    db_instance_identifier: ansible-sql-db-instance1
+    db_instance_class: "{{db_class}}"
+    engine: mysql
+    allocated_storage: 20
+    aws_access_key: "{{access_key}}"  # From vault as defined
+    aws_secret_key: "{{secret_key}}"  # From vault as defined
+    master_username: "{{db_username}}" # From vault as defined
+    master_user_password: "{{db_password}}" # From vault as defined
+    db_name: mydatabase
+    vpc_security_group_ids:
+      - "{{ rds_security_group.group_id }}"
+    region: ap-south-1
+    wait: yes
+    state: present
+
