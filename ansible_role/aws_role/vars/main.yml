@@ -1,0 +1,5 @@
+---
+# vars file for aws_role
+ec2_type: t3.xlarge
+ec2_ami: ami-0b2ec65899cc867ef
+db_class: db.t3.micro

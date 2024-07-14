@@ -1,0 +1,7 @@
+---
+- name: Provisioning AWS Infrastructure
+  hosts: localhost
+  connection: local
+  roles:
+    - aws_role 
+
