@@ -8,8 +8,8 @@
       name: ec2_security_group
       description: "Security group for EC2 instance"
       region: ap-south-1
-      aws_access_key: AKIATCKAQ3O3RMZM3LWC  # From vault as defined
-      aws_secret_key: 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  # From vault as defined
+      aws_access_key: AKIATCKAQ3xxxxxxx  # From vault as defined
+      aws_secret_key: dxZ9yk+qI32hbntg6VHwTOxxxxxxxxxxxxxx  # From vault as defined
       rules:
         - proto: tcp
           from_port: 22
@@ -34,8 +34,8 @@
       instance_type: t3.xlarge
       security_group: "{{ec2_security_group.group_id}}"
       region: ap-south-1
-      aws_access_key: AKIATCKAQ3O3RMZM3LWC  # From vault as defined
-      aws_secret_key: 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  # From vault as defined
+      aws_access_key: AKIATCKxxxxxxxxxxx  # From vault as defined
+      aws_secret_key: dxZ9yk+qI32hbntg6Vxxxxxxxxxxxxxxx  # From vault as defined
       network:
         assign_public_ip: true
       image_id: ami-0b2ec65899cc867ef
@@ -46,8 +46,8 @@
       name: rds_security_group
       description: "Security group for RDS instance"
       region: ap-south-1
-      aws_access_key: AKIATCKAQ3O3RMZM3LWC  # From vault as defined
-      aws_secret_key: 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  # From vault as defined
+      aws_access_key: AKIATCKxxxxxxxxxx  # From vault as defined
+      aws_secret_key: dxZ9yk+qI32hbnxxxxxxxxxxxxxxxxxx  # From vault as defined
       rules:
         - proto: tcp
           from_port: 3306
@@ -67,8 +67,8 @@
       db_instance_class: db.t3.micro
       engine: mysql
       allocated_storage: 20
-      aws_access_key: AKIATCKAQ3O3RMZM3LWC  # From vault as defined
-      aws_secret_key: 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  # From vault as defined
+      aws_access_key: AKIATCKAxxxxxxxx  # From vault as defined
+      aws_secret_key: dxZ9yk+qI32hbntxxxxxxxxxxxxxxx  # From vault as defined
       master_username: admin
       master_user_password: admin123
       db_name: mydatabase
